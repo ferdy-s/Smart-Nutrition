@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Nutrition Admin</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        
+
+        :root {
+
+            --bg: #09090b;
+
+            --card: #111113;
+
+            --border: #27272a;
+
+            --muted: #71717a;
+
+            --text: #fafafa;
+
+            --soft: #18181b;
+
+            --hover: #1f1f23;
+
+            --primary: #ffffff;
+
+        }
+
+
+         *{
+            margin: 0;
+            padding: 0;
+            box-sizing:border-box;
+            font-family: Inter,sans-serif;
+        }
+
+        body{
+            background:#050505;
+            color:#fafafa;
+        }
+
+        .layout{
+            display:flex;
+            min-height:100vh;
+        }
+        /* ========================================
+           SIDEBAR
+        ======================================== */
+
+        .sidebar{
+            width:260px;
+            background:#090909;
+            border-right:1px solid rgba(255,255,255,.06);
+            padding:28px 18px;
+            position:fixed;
+            left:0;
+            top:0;
+            bottom:0;
+        }
+
+        .brand{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            margin-bottom:42px;
+        }
+
+        .brand-icon{
+            width:42px;
+            height:42px;
+            border-radius:14px;
+            background:#fff;
+            color:#000;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:700;
+            font-size:14px;
+        }
+
+        .brand-title{
+            font-size:16px;
+            font-weight:600;
+            line-height:1.4;
+        }
+
+        .menu-label{
+            color:#5f5f67;
+            font-size:11px;
+            margin-bottom:18px;
+            text-transform:uppercase;
+            letter-spacing:1px;
+        }
+
+        .menu{
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+        }
+
+        .menu-item{
+            text-decoration:none;
+            color:#c9c9cf;
+            padding:14px 16px;
+            border-radius:16px;
+            display:flex;
+            align-items:center;
+            gap:14px;
+            transition:.2s ease;
+            font-size:14px;
+            font-weight:500;
+        }
+
+        .menu-item:hover,
+        .menu-item.active{
+            background:#161616;
+            color:#fff;
+        }
+
+        .menu-item i{
+            width:18px;
+        }
+
+        .logout-wrapper{
+            position:absolute;
+            bottom:24px;
+            left:18px;
+            right:18px;
+        }
+
+        /* MAIN */
+
+        .main {
+
+            margin-left: 270px;
+
+            width: calc(100% - 270px);
+
+            padding: 24px;
+
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 28px;
+
+            gap: 20px;
+
+        }
+
+       .page-title {
+
+    font-size:24px;
+
+    font-weight:600;
+
+    letter-spacing:-0.4px;
+
+}
+
+        .page-subtitle {
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+        }
+
+        .topbar-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+        .top-btn {
+
+            height: 42px;
+
+            padding: 0 18px;
+
+            border-radius: 12px;
+
+            background: var(--soft);
+
+            border: 1px solid var(--border);
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+        }
+
+        .profile {
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 50%;
+
+            background: #18181b;
+
+            border: 1px solid var(--border);
+
+        }
+
+        /* GRID */
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 24px;
+
+        }
+
+        .stat-card {
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            padding: 22px;
+
+        }
+
+        .stat-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 18px;
+
+        }
+
+        .stat-title {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+        .stat-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            border-radius: 10px;
+
+            background: #18181b;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: 1px solid var(--border);
+
+            font-size: 13px;
+
+        }
+
+        .stat-value {
+
+            font-size: 32px;
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+
+        }
+
+        .stat-description {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+        /* CONTENT GRID */
+
+        .content-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+
+            margin-bottom: 24px;
+
+        }
+
+        .card {
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 22px;
+
+            padding: 24px;
+            
+
+        }
+
+        .card-title {
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+            margin-bottom: 10px;
+
+        }
+
+        .card-description {
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+        }
+
+       .analytics-circle {
+
+    width:180px;
+
+    height:180px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin:28px auto;
+
+}
+
+        .analytics-inner {
+
+            width: 135px;
+
+            height: 135px;
+
+            border-radius: 50%;
+
+            background: #111113;
+
+            border: 1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 30px;
+
+            font-weight: 700;
+
+        }
+
+        /* TABLE */
+
+        .table-wrapper {
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+        }
+
+        .table-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 22px 24px;
+
+            border-bottom: 1px solid var(--border);
+
+            gap: 20px;
+
+        }
+
+        .table-title {
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+        }
+
+        .table-actions {
+
+            display: flex;
+
+            gap: 12px;
+
+        }
+
+        .search-input {
+
+            width: 240px;
+
+            height: 42px;
+
+            background: #09090b;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            padding: 0 14px;
+
+            color: white;
+
+            outline: none;
+
+        }
+
+        .create-btn {
+
+            height: 42px;
+
+            padding: 0 18px;
+
+            border-radius: 12px;
+
+            background: white;
+
+            color: black;
+
+            text-decoration: none;
+
+            display: flex;
+
+            align-items: center;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+        .table-responsive {
+
+            overflow-x: auto;
+
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 1000px;
+
+        }
+
+        thead {
+
+            background: #0c0c0f;
+
+        }
+
+        th {
+
+            padding: 16px 24px;
+
+            text-align: left;
+
+            color: #a1a1aa;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+
+            border-bottom: 1px solid var(--border);
+
+        }
+
+        td {
+
+            padding: 18px 24px;
+
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+
+            font-size: 14px;
+
+            color: #f4f4f5;
+
+        }
+
+        tbody tr:hover {
+
+            background: rgba(255,255,255,0.02);
+
+        }
+
+        .food-name {
+
+            font-weight: 600;
+
+        }
+
+        .action-group {
+
+            display: flex;
+
+            gap: 10px;
+
+        }
+
+        .action-btn {
+
+            width: 36px;
+
+            height: 36px;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-decoration: none;
+
+            border: 1px solid var(--border);
+
+            color: white;
+
+            background: #18181b;
+
+        }
+
+        .action-btn:hover {
+
+            background: #27272a;
+
+        }
+
+        /* MOBILE */
+
+        .mobile-toggle {
+
+            display: none;
+
+            position: fixed;
+
+            top: 20px;
+
+            left: 20px;
+
+            width: 46px;
+
+            height: 46px;
+
+            border-radius: 12px;
+
+            border: 1px solid var(--border);
+
+            background: #111113;
+
+            color: white;
+
+            z-index: 9999;
+
+        }
+
+        @media(max-width: 1200px) {
+
+            .stats-grid {
+
+                grid-template-columns: repeat(2, 1fr);
+
+            }
+
+            .content-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+        @media(max-width: 900px) {
+
+            .mobile-toggle {
+
+                display: block;
+
+            }
+
+            .sidebar {
+
+                left: -100%;
+
+            }
+
+            .sidebar.active {
+
+                left: 0;
+
+            }
+
+            .main {
+
+                margin-left: 0;
+
+                width: 100%;
+
+                padding: 90px 18px 20px;
+
+            }
+
+        }
+
+        @media(max-width: 700px) {
+
+            .stats-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .topbar {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+            }
+
+            .table-header {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+            }
+
+            .table-actions {
+
+                flex-direction: column;
+
+            }
+
+            .search-input {
+
+                width: 100%;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <button class="mobile-toggle" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="layout">
+
+       <aside
+    class="sidebar"
+    id="sidebar"
+>
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    SN
+                </div>
+
+                <div class="brand-title">
+                    Smart Nutrition
+                </div>
+
+            </div>
+
+            <div class="menu-label">
+                Overview
+            </div>
+
+            <div class="menu">
+
+                <a
+                    href="/dashboard"
+                    class="menu-item active"
+                >
+
+                    <i class="fa-solid fa-table-columns"></i>
+
+                    Dashboard
+
+                </a>
+
+                <a
+                    href="/admin-food"
+                    class="menu-item"
+                >
+
+                    <i class="fa-solid fa-bowl-food"></i>
+
+                    Foods Database
+
+                </a>
+
+                <a
+                    href="/athletes"
+                    class="menu-item"
+                >
+
+                    <i class="fa-solid fa-users"></i>
+
+                    Athletes
+
+                </a>
+
+                <a
+                    href="/recommendation-engine"
+                    class="menu-item"
+                >
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    Recommendation Engine
+
+                </a>
+
+                <a
+                    href="analytics"
+                    class="menu-item"
+                >
+
+                    <i class="fa-solid fa-heart-pulse"></i>
+
+                    Analytics
+
+                </a>
+
+            </div>
+
+            <div class="logout-wrapper">
+
+                <a
+                    href="/logout"
+                    class="menu-item"
+                >
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    Logout
+
+                </a>
+
+            </div>
+
+        </aside>
+
+        <main class="main">
+
+            <div class="topbar">
+
+                <div>
+
+                    <div class="page-title">
+                        AI Recommendation Analytics
+                    </div>
+
+                    <div class="page-subtitle">
+                        Monitor collaborative filtering recommendation performance
+                    </div>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <a href="#" class="top-btn">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                        View Analytics
+                    </a>
+
+
+                </div>
+
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+
+                        <div class="stat-title">
+                            Recommendation Acceptance
+                        </div>
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        {{ acceptance_rate }}%
+                    </div>
+
+                    <div class="stat-description">
+                        Recommendation selected by athletes
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+
+                        <div class="stat-title">
+                            Average Predicted Score
+                        </div>
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        {{ average_predicted_score }}
+                    </div>
+
+                    <div class="stat-description">
+                        AI recommendation quality
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+
+                        <div class="stat-title">
+                            Active Athletes
+                        </div>
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-dumbbell"></i>
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        {{ active_athletes }}
+                    </div>
+
+                    <div class="stat-description">
+                        Active recommendation interaction
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+
+                        <div class="stat-title">
+                            Onboarding Completion
+                        </div>
+
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        {{ onboarding_completion_rate }}%
+                    </div>
+
+                    <div class="stat-description">
+                        Users completed rating onboarding
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="content-grid">
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Recommendation Trends
+                    </div>
+
+                    <div class="card-description">
+
+                        Recommendation interaction and athlete engagement analytics.
+
+                    </div>
+
+                    <canvas
+                        id="recommendationChart"
+                        style="margin-top:30px;"
+                    ></canvas>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Recommendation Accuracy
+                    </div>
+
+                   <div
+    class="analytics-circle"
+    data-accuracy="{{ recommendation_accuracy }}"
+>
+
+                        <div class="analytics-inner">
+                            {{ recommendation_accuracy }}%
+                        </div>
+
+                    </div>
+
+                    <div
+                        style="
+                            text-align:center;
+                            color:var(--muted);
+                            font-size:14px;
+                        "
+                    >
+
+                        Collaborative filtering model performance
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div
+    class="card"
+    style="
+        margin-top:24px;
+    "
+>
+
+    <div class="card-title">
+        Live Recommendation Activity
+    </div>
+
+    <div class="card-description">
+        Realtime athlete recommendation interaction.
+    </div>
+
+    <div
+        id="liveActivity"
+        style="
+            margin-top:22px;
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+        "
+    >
+
+        {% for activity in recent_activities %}
+
+        <div
+            style="
+                background:#18181b;
+                border:1px solid #27272a;
+                border-radius:14px;
+                padding:14px;
+            "
+        >
+
+            <div
+                style="
+                    font-size:14px;
+                    font-weight:600;
+                "
+            >
+                {{ activity.user.full_name }}
+            </div>
+
+            <div
+                style="
+                    margin-top:6px;
+                    color:#71717a;
+                    font-size:13px;
+                "
+            >
+
+                Rated
+
+                {{ activity.food.food_name }}
+
+                with
+
+                {{ activity.rating }}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+        </main>
+
+    </div>
+<script>
+
+function toggleSidebar(){
+
+    document
+        .getElementById('sidebar')
+        .classList.toggle('active');
+
+}
+
+
+// =====================================
+// ANALYTICS CIRCLE
+// =====================================
+
+const analyticsCircle =
+    document.querySelector(
+        '.analytics-circle'
+    );
+
+if(analyticsCircle){
+
+    const accuracy =
+        analyticsCircle.dataset.accuracy;
+
+    analyticsCircle.style.background =
+
+        `conic-gradient(
+            white 0% ${accuracy}%,
+            #27272a ${accuracy}% 100%
+        )`;
+
+}
+
+
+// =====================================
+// RECOMMENDATION CHART
+// =====================================
+
+new Chart(
+
+    document.getElementById(
+        'recommendationChart'
+    ),
+
+    {
+
+        type:'line',
+
+        data:{
+
+            labels:[
+                'Mon',
+                'Tue',
+                'Wed',
+                'Thu',
+                'Fri',
+                'Sat',
+                'Sun'
+            ],
+
+            datasets:[{
+
+                label:'Interactions',
+
+                data:[
+
+                    Number('{{ monday_interactions }}'),
+
+                    Number('{{ tuesday_interactions }}'),
+
+                    Number('{{ wednesday_interactions }}'),
+
+                    Number('{{ thursday_interactions }}'),
+
+                    Number('{{ friday_interactions }}'),
+
+                    Number('{{ saturday_interactions }}'),
+
+                    Number('{{ sunday_interactions }}')
+
+                ],
+
+                borderColor:'#ffffff',
+
+                backgroundColor:
+                    'rgba(255,255,255,0.05)',
+
+                borderWidth:2,
+
+                tension:0.4,
+
+                fill:true,
+
+                pointRadius:4,
+
+                pointBackgroundColor:'#ffffff'
+
+            }]
+
+        },
+
+        options:{
+
+            responsive:true,
+
+            plugins:{
+
+                legend:{
+
+                    labels:{
+                        color:'#ffffff'
+                    }
+
+                }
+
+            },
+
+            scales:{
+
+                x:{
+
+                    ticks:{
+                        color:'#71717a'
+                    },
+
+                    grid:{
+                        color:'rgba(255,255,255,.03)'
+                    }
+
+                },
+
+                y:{
+
+                    ticks:{
+                        color:'#71717a'
+                    },
+
+                    grid:{
+                        color:'rgba(255,255,255,.03)'
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+
+// =====================================
+// SOCKET.IO REALTIME
+// =====================================
+
+const socket = io();
+
+socket.on(
+
+    'food_rated',
+
+    function(data){
+
+        const container =
+            document.getElementById(
+                'liveActivity'
+            );
+
+        const item =
+            document.createElement('div');
+
+        item.style.background =
+            '#18181b';
+
+        item.style.border =
+            '1px solid #27272a';
+
+        item.style.padding =
+            '14px';
+
+        item.style.borderRadius =
+            '14px';
+
+        item.innerHTML = `
+
+            <div
+                style="
+                    font-size:14px;
+                    font-weight:600;
+                "
+            >
+                ${data.user}
+            </div>
+
+            <div
+                style="
+                    margin-top:6px;
+                    color:#71717a;
+                    font-size:13px;
+                "
+            >
+                ${data.message}
+            </div>
+
+        `;
+
+        container.prepend(item);
+
+    }
+
+);
+
+</script>
+
+</body>
+
+</html>

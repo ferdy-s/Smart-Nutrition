@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Smart Nutrition Dashboard</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+            font-family: 'Inter', sans-serif;
+
+        }
+
+        :root {
+
+            --bg: #09090b;
+
+            --card: #111113;
+
+            --soft: #18181b;
+
+            --border: #27272a;
+
+            --text: #fafafa;
+
+            --muted: #71717a;
+
+        }
+
+        body {
+
+            background: var(--bg);
+
+            color: var(--text);
+
+            overflow-x: hidden;
+
+        }
+
+        .layout {
+
+            display: flex;
+
+            min-height: 100vh;
+
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+
+            width: 270px;
+
+            height: 100vh;
+
+            background: #0c0c0f;
+
+            border-right: 1px solid var(--border);
+
+            position: fixed;
+
+            left: 0;
+
+            top: 0;
+
+            padding: 22px 16px;
+
+            z-index: 999;
+
+            transition: 0.3s ease;
+
+        }
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 10px 12px;
+
+            margin-bottom: 42px;
+
+        }
+
+        .brand-icon {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 14px;
+
+            background: white;
+
+            color: black;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: 800;
+
+            font-size: 14px;
+
+        }
+
+        .brand-title {
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+        }
+
+        .menu-label {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            padding-left: 12px;
+
+            margin-bottom: 14px;
+
+        }
+
+        .menu {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 6px;
+
+        }
+
+        .menu-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            text-decoration: none;
+
+            color: #d4d4d8;
+
+            padding: 14px 14px;
+
+            border-radius: 14px;
+
+            transition: 0.2s ease;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+        }
+
+        .menu-item:hover {
+
+            background: var(--soft);
+
+            color: white;
+
+        }
+
+        .menu-item.active {
+
+            background: #18181b;
+
+            border: 1px solid #27272a;
+
+            color: white;
+
+        }
+
+        .menu-item i {
+
+            width: 18px;
+
+            font-size: 15px;
+
+        }
+
+        /* MAIN */
+
+        .main {
+
+            margin-left: 270px;
+
+            width: calc(100% - 270px);
+
+            padding: 24px;
+
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 28px;
+
+            gap: 20px;
+
+        }
+
+        .welcome-title {
+
+            font-size: 30px;
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+
+            letter-spacing: -1px;
+
+        }
+
+        .welcome-subtitle {
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+        }
+
+        .topbar-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+        .top-btn {
+
+            height: 42px;
+
+            padding: 0 18px;
+
+            border-radius: 12px;
+
+            background: var(--soft);
+
+            border: 1px solid var(--border);
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+        }
+
+        /* HERO */
+
+        .hero-card {
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(255,255,255,0.08),
+                    transparent 30%
+                ),
+                #111113;
+
+            border: 1px solid var(--border);
+
+            border-radius: 28px;
+
+            padding: 34px;
+
+            margin-bottom: 22px;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .hero-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            height: 38px;
+
+            padding: 0 16px;
+
+            border-radius: 999px;
+
+            background: rgba(255,255,255,0.04);
+
+            border: 1px solid rgba(255,255,255,0.06);
+
+            color: #d4d4d8;
+
+            font-size: 13px;
+
+            margin-bottom: 20px;
+
+        }
+
+        .hero-title {
+
+            font-size: 44px;
+
+            font-weight: 800;
+
+            line-height: 1;
+
+            letter-spacing: -2px;
+
+            margin-bottom: 18px;
+
+            max-width: 700px;
+
+        }
+
+        .hero-description {
+
+            color: #a1a1aa;
+
+            line-height: 1.9;
+
+            max-width: 760px;
+
+            font-size: 15px;
+
+        }
+
+        /* STATS */
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 24px;
+
+        }
+
+        .stat-card {
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 22px;
+
+            padding: 24px;
+
+            transition: 0.2s ease;
+
+        }
+
+        .stat-card:hover {
+
+            transform: translateY(-4px);
+
+        }
+
+        .stat-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+
+        }
+
+        .stat-title {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+        .stat-icon {
+
+            width: 36px;
+
+            height: 36px;
+
+            border-radius: 12px;
+
+            background: #18181b;
+
+            border: 1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 13px;
+
+        }
+
+        .stat-value {
+
+            font-size: 32px;
+
+            font-weight: 700;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 8px;
+
+        }
+
+        .stat-description {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+        /* SECTION */
+
+        .section-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+
+            gap: 20px;
+
+        }
+
+        .section-title {
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+        }
+
+        .section-action {
+
+            height: 40px;
+
+            padding: 0 16px;
+
+            border-radius: 12px;
+
+            border: 1px solid var(--border);
+
+            background: #18181b;
+
+            color: white;
+
+            text-decoration: none;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 14px;
+
+        }
+
+        /* FOOD GRID */
+
+        .foods-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(320px, 1fr)
+            );
+
+            gap: 18px;
+
+            margin-bottom: 100px;
+
+        }
+
+        .food-card {
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 24px;
+
+            overflow: hidden;
+
+            transition: 0.25s ease;
+
+        }
+
+        .food-card:hover {
+
+            transform: translateY(-4px);
+
+            border-color: rgba(255,255,255,0.12);
+
+        }
+
+        .food-image {
+
+            height: 190px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(255,255,255,0.08),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #18181b,
+                    #111113
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 54px;
+
+        }
+
+        .food-content {
+
+            padding: 24px;
+
+        }
+
+        .food-header {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 20px;
+
+            margin-bottom: 18px;
+
+        }
+
+        .food-name {
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+            letter-spacing: -1px;
+
+            align-items: center;
+
+        }
+
+        .food-score {
+
+            height: 34px;
+
+            padding: 0 12px;
+
+            border-radius: 999px;
+
+            background: rgba(255,255,255,0.04);
+
+            border: 1px solid rgba(255,255,255,0.06);
+
+            display: flex;
+
+            align-items: center;
+
+            font-size: 13px;
+
+            color: #d4d4d8;
+
+            white-space: nowrap;
+
+        }
+
+        .nutrition-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 12px;
+
+            margin-top: 18px;
+
+        }
+
+        .nutrition-item {
+
+            background: #18181b;
+
+            border: 1px solid rgba(255,255,255,0.04);
+
+            border-radius: 16px;
+
+            padding: 16px;
+
+        }
+
+        .nutrition-label {
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            margin-bottom: 8px;
+
+        }
+
+        .nutrition-value {
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+        }
+
+        .food-actions {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 22px;
+
+        }
+
+        .rating-section {
+
+    margin-top: 20px;
+
+}
+
+.rating-title {
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    margin-bottom: 12px;
+
+}
+
+.rating-buttons {
+
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+}
+
+.rating-btn {
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--border);
+
+    background: #18181b;
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+}
+
+.rating-btn:hover {
+
+    background: white;
+
+    color: black;
+
+}
+
+.rating-btn.active {
+
+    background: white;
+
+    color: black;
+
+}
+
+        .food-btn {
+
+            flex: 1;
+
+            height: 46px;
+
+            border-radius: 14px;
+
+            border: 1px solid var(--border);
+
+            background: #18181b;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+
+        }
+
+        .food-btn:hover {
+
+            background: #27272a;
+
+        }
+
+        .food-btn.primary {
+
+            background: white;
+
+            color: black;
+
+        }
+
+        /* MOBILE NAV */
+
+        .mobile-nav {
+
+            display: none;
+
+        }
+
+        /* MOBILE */
+
+        .mobile-toggle {
+
+            display: none;
+
+            position: fixed;
+
+            top: 18px;
+
+            left: 18px;
+
+            width: 46px;
+
+            height: 46px;
+
+            border-radius: 12px;
+
+            border: 1px solid var(--border);
+
+            background: #111113;
+
+            color: white;
+
+            z-index: 9999;
+
+        }
+
+        @media(max-width: 1200px) {
+
+            .stats-grid {
+
+                grid-template-columns: repeat(2, 1fr);
+
+            }
+
+        }
+
+        @media(max-width: 900px) {
+
+            .mobile-toggle {
+
+                display: block;
+
+            }
+
+            .sidebar {
+
+                left: -100%;
+
+            }
+
+            .sidebar.active {
+
+                left: 0;
+
+            }
+
+            .main {
+
+                margin-left: 0;
+
+                width: 100%;
+
+                padding: 86px 18px 20px;
+
+            }
+
+        }
+
+        @media(max-width: 700px) {
+
+            .stats-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .foods-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .topbar {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+            }
+
+            .hero-title {
+
+                font-size: 34px;
+
+            }
+
+            .mobile-nav {
+
+                position: fixed;
+
+                left: 0;
+
+                bottom: 0;
+
+                width: 100%;
+
+                height: 74px;
+
+                background: rgba(10,10,11,0.96);
+
+                border-top: 1px solid var(--border);
+
+                display: grid;
+
+                grid-template-columns: repeat(5, 1fr);
+
+                z-index: 9999;
+
+                backdrop-filter: blur(20px);
+
+            }
+
+            .mobile-nav-item {
+
+                display: flex;
+
+                flex-direction: column;
+
+                align-items: center;
+
+                justify-content: center;
+
+                text-decoration: none;
+
+                color: #71717a;
+
+                font-size: 11px;
+
+                gap: 6px;
+
+            }
+
+            .mobile-nav-item.active {
+
+                color: white;
+
+            }
+
+            .mobile-nav-item i {
+
+                font-size: 18px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <button
+        class="mobile-toggle"
+        onclick="toggleSidebar()"
+    >
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+
+        <aside
+            class="sidebar"
+            id="sidebar"
+        >
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    SN
+                </div>
+
+                <div class="brand-title">
+                    Smart Nutrition
+                </div>
+
+            </div>
+
+            <div class="menu-label">
+                Main Menu
+            </div>
+
+            <div class="menu">
+
+                <a href="#" class="menu-item active">
+
+                    <i class="fa-solid fa-table-columns"></i>
+
+                    Dashboard
+
+                </a>
+
+              <a
+    href="/recommendations"
+    class="menu-item"
+>
+
+    <i class="fa-solid fa-utensils"></i>
+
+    Recommendations
+
+</a>
+
+              <a
+    href="/nutrition-plan"
+    class="menu-item"
+>
+
+    <i class="fa-solid fa-heart-pulse"></i>
+
+    Nutrition Plan
+
+</a>
+
+                <a href="/favorites" class="menu-item">
+
+                    <i class="fa-solid fa-bookmark"></i>
+
+                    Favorites
+
+                </a>
+
+                <a href="/profile" class="menu-item">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    Profile
+
+                </a>
+
+            </div>
+
+        </aside>
+
+        <!-- MAIN -->
+
+        <main class="main">
+
+            <div class="topbar">
+
+                <div>
+
+                    <div class="welcome-title">
+
+                        Welcome,
+                        {{ current_user.full_name }}
+
+                    </div>
+
+                    <div class="welcome-subtitle">
+
+                        {% if ai_ready %}
+
+Personalized AI recommendation engine based on collaborative filtering and athlete nutrition profiling.
+
+{% else %}
+
+Rate at least 10 foods to activate personalized AI nutrition recommendations.
+
+{% endif %}
+
+                    </div>
+
+                </div>
+
+                <div class="topbar-actions">
+
+                    <a href="#" class="top-btn">
+
+                        <i class="fa-solid fa-sliders"></i>
+
+                        Preferences
+
+                    </a>
+
+                    <a
+                        href="{{ url_for('auth.logout') }}"
+                        class="top-btn"
+                    >
+
+                        <i class="fa-solid fa-right-from-bracket"></i>
+
+                        Logout
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- HERO -->
+
+            <div class="hero-card">
+
+                <div class="hero-badge">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                    AI Nutrition Recommendation
+
+                </div>
+
+                <div class="hero-title">
+
+                    Personalized Nutrition Intelligence For Athletes
+
+                </div>
+
+               <div class="hero-description">
+
+    {% if ai_ready %}
+
+    Your recommendation engine is now actively generating
+    personalized nutrition recommendations using collaborative
+    filtering, cosine similarity, nutrition profiling, and
+    athlete behavior analysis.
+
+    {% else %}
+
+    Start building your nutrition preference profile by rating
+    foods below. Once you rate at least 10 foods, the AI
+    recommendation engine will activate personalized athlete
+    recommendations automatically.
+
+    {% endif %}
+
+</div>
+
+            </div>
+            {% if not ai_ready %}
+
+<div
+    style="
+        background:#111113;
+        border:1px solid #27272a;
+        border-radius:24px;
+        padding:28px;
+        margin-bottom:24px;
+    "
+>
+
+    <div
+        style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:18px;
+            gap:20px;
+            flex-wrap:wrap;
+        "
+    >
+
+        <div>
+
+            <div
+                style="
+                    font-size:18px;
+                    font-weight:700;
+                    margin-bottom:6px;
+                "
+            >
+
+                AI Training Progress
+
+            </div>
+
+            <div
+                style="
+                    color:#71717a;
+                    font-size:14px;
+                    line-height:1.7;
+                "
+            >
+
+                Rate at least 10 foods to activate
+                personalized collaborative filtering.
+
+            </div>
+
+        </div>
+
+        <div
+            style="
+                height:44px;
+                padding:0 18px;
+                border-radius:14px;
+                background:#18181b;
+                border:1px solid #27272a;
+                display:flex;
+                align-items:center;
+                font-size:14px;
+                font-weight:600;
+            "
+        >
+
+            {{ total_ratings }}/10 Completed
+
+        </div>
+
+    </div>
+
+    <div
+        style="
+            width:100%;
+            height:16px;
+            background:#18181b;
+            border-radius:999px;
+            overflow:hidden;
+        "
+    >
+
+    <div
+    class="progress-fill"
+    data-width="{{ progress_width }}"
+></div>
+<style>
+    .progress-fill{
+
+    height:100%;
+
+    background:white;
+
+    border-radius:999px;
+
+    transition:0.3s ease;
+
+}
+</style>
+    </div>
+
+</div>
+
+{% endif %}
+            <!-- STATS -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+
+                        <div class="stat-title">
+                            Weight
+                        </div>
+
+                        <div class="stat-icon">
+
+                            <i class="fa-solid fa-weight-scale"></i>
+
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        {{ current_user.weight }}kg
+                    </div>
+
+                    <div class="stat-description">
+                        Current athlete body weight
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+
+                        <div class="stat-title">
+                            Sport Type
+                        </div>
+
+                        <div class="stat-icon">
+
+                            <i class="fa-solid fa-dumbbell"></i>
+
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        {{ current_user.sport_type }}
+                    </div>
+
+                    <div class="stat-description">
+                        Athlete combat sport category
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+
+                        <div class="stat-title">
+                            Training Phase
+                        </div>
+
+                        <div class="stat-icon">
+
+                            <i class="fa-solid fa-fire"></i>
+
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        {{ current_user.training_phase }}
+                    </div>
+
+                    <div class="stat-description">
+                        Current athlete preparation phase
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+
+                        <div class="stat-title">
+                            Sugar Limit
+                        </div>
+
+                        <div class="stat-icon">
+
+                            <i class="fa-solid fa-bolt"></i>
+
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        {{ current_user.sugar_limit }}g
+                    </div>
+
+                    <div class="stat-description">
+                        Maximum daily sugar intake
+                    </div>
+
+                </div>
+
+            </div>
+<!-- AI STATUS -->
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-header">
+
+            <div class="stat-title">
+                AI Recommendation Status
+            </div>
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-brain"></i>
+
+            </div>
+
+        </div>
+
+        <div class="stat-value">
+
+            {% if ai_ready %}
+                Active
+            {% else %}
+                Training
+            {% endif %}
+
+        </div>
+
+        <div class="stat-description">
+
+            {% if ai_ready %}
+                Recommendation engine fully activated
+            {% else %}
+                Complete onboarding ratings to activate AI
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-header">
+
+            <div class="stat-title">
+                Rated Foods
+            </div>
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-star"></i>
+
+            </div>
+
+        </div>
+
+        <div class="stat-value">
+            {{ total_ratings }}/10
+        </div>
+
+        <div class="stat-description">
+
+            Collaborative filtering onboarding progress
+
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-header">
+
+            <div class="stat-title">
+                Recommendation Model
+            </div>
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+
+        </div>
+
+        <div class="stat-value">
+            CF
+        </div>
+
+        <div class="stat-description">
+
+            Cosine similarity collaborative filtering
+
+        </div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-header">
+
+            <div class="stat-title">
+                Nutrition Filtering
+            </div>
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-shield-heart"></i>
+
+            </div>
+
+        </div>
+
+        <div class="stat-value">
+            Active
+        </div>
+
+        <div class="stat-description">
+
+            Sugar & training phase filtering enabled
+
+        </div>
+
+    </div>
+
+</div>
+            <!-- SECTION -->
+
+            <div class="section-header">
+
+                <div class="section-title">
+                {% if ai_ready %}
+
+    AI Recommended Foods
+
+{% else %}
+
+    Select Foods You Like
+
+{% endif %}
+                </div>
+
+                <a href="#" class="section-action">
+
+                    <i class="fa-solid fa-sliders"></i>
+
+                    {% if ai_ready %}
+
+    AI Recommendation Active
+
+{% else %}
+
+    Onboarding Mode
+
+{% endif %}
+
+                </a>
+
+            </div>
+
+            <!-- FOOD GRID -->
+
+            <div class="foods-grid">
+
+                {% if foods|length == 0 %}
+
+<div
+    style="
+        background:#111113;
+        border:1px solid #27272a;
+        border-radius:28px;
+        padding:60px 24px;
+        text-align:center;
+        grid-column:1/-1;
+    "
+>
+
+    <div
+        style="
+            font-size:64px;
+            margin-bottom:20px;
+        "
+    >
+
+        🍽️
+
+    </div>
+
+    <div
+        style="
+            font-size:24px;
+            font-weight:700;
+            margin-bottom:14px;
+        "
+    >
+
+        No Recommendation Available Yet
+
+    </div>
+
+    <div
+        style="
+            color:#71717a;
+            max-width:600px;
+            margin:auto;
+            line-height:1.8;
+        "
+    >
+
+        Start rating foods to help the AI recommendation
+        engine understand your nutrition preferences
+        and athlete dietary behavior.
+
+    </div>
+
+</div>
+
+{% else %}
+
+{% for food in foods %}
+
+                <div class="food-card">
+
+                    <div class="food-image">
+                        🍽️
+                    </div>
+
+                    <div class="food-content">
+
+                        <div class="food-header">
+
+                            <div class="food-name">
+
+                                {{ food.food_name }}
+
+                            </div>
+
+                        </div>
+
+                        <div
+    style="
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+        margin-bottom:18px;
+    "
+>
+
+    <div class="food-score">
+        High Protein
+    </div>
+
+    <div class="food-score">
+
+    {% if ai_ready %}
+
+        AI Recommended
+
+    {% else %}
+
+        Preference Training
+
+    {% endif %}
+
+</div>
+
+    {% if current_user.training_phase == 'CUTTING' %}
+
+    <div class="food-score">
+        Cutting Phase
+    </div>
+
+    {% else %}
+
+    <div class="food-score">
+        Normal Training
+    </div>
+
+    {% endif %}
+
+</div>
+
+                        <div class="nutrition-grid">
+
+                            <div class="nutrition-item">
+
+                                <div class="nutrition-label">
+                                    Calories
+                                </div>
+
+                                <div class="nutrition-value">
+                                    {{ food.calories }}
+                                </div>
+
+                            </div>
+
+                            <div class="nutrition-item">
+
+                                <div class="nutrition-label">
+                                    Protein
+                                </div>
+
+                                <div class="nutrition-value">
+                                    {{ food.protein }}g
+                                </div>
+
+                            </div>
+
+                            <div class="nutrition-item">
+
+                                <div class="nutrition-label">
+                                    Carbs
+                                </div>
+
+                                <div class="nutrition-value">
+                                    {{ food.carbohydrates }}g
+                                </div>
+
+                            </div>
+
+                            <div class="nutrition-item">
+
+                                <div class="nutrition-label">
+                                    Sugar
+                                </div>
+
+                                <div class="nutrition-value">
+                                    {{ food.sugar }}g
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                       <div class="rating-section">
+
+    <div class="rating-title">
+
+        {% if ai_ready %}
+
+Rate this recommendation to improve your AI model
+
+{% else %}
+
+Rate this food to train your recommendation AI
+
+{% endif %}
+
+    </div>
+
+    <form
+        method="POST"
+        action="/rate-food/{{ food.id }}"
+    >
+
+        <div class="rating-buttons">
+
+            <button
+                class="rating-btn {% if ratings.get(food.id) == 1 %}active{% endif %}"
+                name="rating"
+                value="1"
+            >
+
+                1
+
+            </button>
+
+            <button
+                class="rating-btn {% if ratings.get(food.id) == 2 %}active{% endif %}"
+                name="rating"
+                value="2"
+            >
+
+                2
+
+            </button>
+
+            <button
+                class="rating-btn {% if ratings.get(food.id) == 3 %}active{% endif %}"
+                name="rating"
+                value="3"
+            >
+
+                3
+
+            </button>
+
+            <button
+                class="rating-btn {% if ratings.get(food.id) == 4 %}active{% endif %}"
+                name="rating"
+                value="4"
+            >
+
+                4
+
+            </button>
+
+            <button
+                class="rating-btn {% if ratings.get(food.id) == 5 %}active{% endif %}"
+                name="rating"
+                value="5"
+            >
+
+                5
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+                {% endif %}
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- MOBILE NAV -->
+
+    <div class="mobile-nav">
+
+        <a href="#" class="mobile-nav-item active">
+
+            <i class="fa-solid fa-house"></i>
+
+            Home
+
+        </a>
+
+        <a href="#" class="mobile-nav-item">
+
+            <i class="fa-solid fa-utensils"></i>
+
+            Foods
+
+        </a>
+
+        <a href="#" class="mobile-nav-item">
+
+            <i class="fa-solid fa-heart"></i>
+
+            Saved
+
+        </a>
+
+        <a href="#" class="mobile-nav-item">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Progress
+
+        </a>
+
+        <a href="#" class="mobile-nav-item">
+
+            <i class="fa-solid fa-user"></i>
+
+            Profile
+
+        </a>
+
+    </div>
+
+    <script>
+
+        function toggleSidebar() {
+
+            document
+                .getElementById('sidebar')
+                .classList.toggle('active');
+
+        }
+
+    </script>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<script>
+
+    const socket = io();
+
+    socket.on(
+
+        'food_rated',
+
+        function(data) {
+
+            console.log(data);
+
+        }
+
+    );
+
+</script>
+
+</body>
+
+</html>

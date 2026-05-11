@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nutrition Plan</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Inter',sans-serif;
+        }
+
+        body{
+
+            background:#09090b;
+            color:white;
+
+        }
+
+        .layout{
+
+            display:flex;
+            min-height:100vh;
+
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+
+            width: 270px;
+
+            height: 100vh;
+
+            background: #0c0c0f;
+
+            border-right: 1px solid var(--border);
+
+            position: fixed;
+
+            left: 0;
+
+            top: 0;
+
+            padding: 22px 16px;
+
+            z-index: 999;
+
+            transition: 0.3s ease;
+
+        }
+    .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 10px 12px;
+
+            margin-bottom: 42px;
+
+        }
+
+        .brand-icon {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 14px;
+
+            background: white;
+
+            color: black;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: 800;
+
+            font-size: 14px;
+
+        }
+
+        .brand-title {
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+        }
+
+       .menu-label{
+
+    color:#52525b;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-weight:600;
+    margin-bottom:16px;
+    padding-left:12px;
+
+}
+
+        .menu {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 6px;
+
+        }
+
+        .menu-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            text-decoration: none;
+
+            color: #d4d4d8;
+
+            padding: 14px 14px;
+
+            border-radius: 14px;
+
+            transition: 0.2s ease;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+        }
+
+        .menu-item:hover {
+
+            background: var(--soft);
+
+            color: white;
+
+        }
+
+        .menu-item.active {
+
+            background: #18181b;
+
+            border: 1px solid #27272a;
+
+            color: white;
+
+        }
+
+        .menu-item i {
+
+            width: 18px;
+
+            font-size: 15px;
+
+        }
+
+        /* MAIN */
+
+       .main{
+
+    margin-left:270px;
+
+    width:calc(100% - 270px);
+
+    padding:22px;
+
+}
+
+        .hero{
+
+            background:#111113;
+            border:1px solid #27272a;
+            border-radius:22px;
+            padding:30px;
+            margin-bottom:28px;
+
+        }
+
+        .hero-title{
+
+            font-size:40px;
+            font-weight:600;
+            line-height:1.1;
+            letter-spacing:-1.4px;;
+            margin-bottom:14px;
+
+        }
+
+        .hero-description{
+
+            color:#8b8b93;
+            line-height:1.75;
+
+    font-size:14px;
+
+    max-width:760px;
+
+        }
+
+        /* STATS */
+
+        .stats-grid{
+
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:16px;
+            margin-bottom:28px;
+
+        }
+
+        .stat-card{
+
+            background:#111113;
+            border:1px solid #27272a;
+            border-radius:20px;
+            padding:18px;
+
+        }
+
+        .stat-label{
+
+            color:#71717a;
+            margin-bottom:12px;
+             font-size:12px;
+
+    color:#8b8b93;
+
+    margin-bottom:10px;
+        }
+
+        .stat-value{
+
+           font-size:28px;
+
+    font-weight:600;
+
+    letter-spacing:-0.5px;
+
+        }
+
+        /* MEAL GRID */
+
+        .meal-grid{
+
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:24px;
+
+        }
+
+        .meal-card{
+
+            background:#111113;
+            border:1px solid #27272a;
+             border-radius:20px;
+            overflow:hidden;
+
+        }
+
+        .meal-header{
+
+            padding:18px 20px;
+            border-bottom:1px solid #27272a;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+
+        }
+
+       .meal-title{
+
+    font-size:20px;
+
+    font-weight:600;
+
+    letter-spacing:-0.3px;
+
+    padding-left:4px;
+
+}
+
+.meal-target{
+
+    background:#18181b;
+
+    border:1px solid #27272a;
+
+    border-radius:999px;
+
+    padding:8px 14px;
+
+    font-size:10px;
+
+    font-weight:500;
+
+}
+
+.meal-content{
+
+    padding:20px 24px;
+
+}
+
+.food-item{
+
+    padding:16px 6px 16px 6px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.04);
+
+}
+
+.food-item:last-child{
+
+    border-bottom:none;
+
+}
+
+.food-name{
+
+    font-size:15px;
+
+    font-weight:600;
+
+    margin-bottom:10px;
+
+    line-height:1.5;
+
+    padding-left:2px;
+
+}
+
+.food-meta{
+
+    display:flex;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+    padding-left:2px;
+
+}
+
+.food-badge{
+
+    padding:6px 10px;
+
+    border-radius:10px;
+
+    background:#18181b;
+
+    border:1px solid #27272a;
+
+    font-size:11px;
+
+    color:#d4d4d8;
+
+    font-weight:500;
+
+}
+
+        @media(max-width:1200px){
+
+            .stats-grid{
+                grid-template-columns:repeat(2,1fr);
+            }
+
+        }
+
+        @media(max-width:900px){
+
+            .sidebar{
+                display:none;
+            }
+
+            .main{
+                margin-left:0;
+                width:100%;
+            }
+
+            .meal-grid{
+                grid-template-columns:1fr;
+            }
+
+        }
+
+        @media(max-width:700px){
+
+            .stats-grid{
+                grid-template-columns:1fr;
+            }
+
+            .hero-title{
+                font-size:42px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+   <aside
+            class="sidebar"
+            id="sidebar"
+        >
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    SN
+                </div>
+
+                <div class="brand-title">
+                    Smart Nutrition
+                </div>
+
+            </div>
+
+            <div class="menu-label">
+                Main Menu
+            </div>
+
+            <div class="menu">
+
+                <a href="/dashboard" class="menu-item">
+
+                    <i class="fa-solid fa-table-columns"></i>
+
+                    Dashboard
+
+                </a>
+
+              <a
+    href="/recommendations"
+    class="menu-item"
+>
+
+    <i class="fa-solid fa-utensils"></i>
+
+    Recommendations
+
+</a>
+
+              <a
+    href="/nutrition-plan"
+    class="menu-item active"
+>
+
+    <i class="fa-solid fa-heart-pulse"></i>
+
+    Nutrition Plan
+
+</a>
+
+                <a href="/favorites" class="menu-item">
+
+                    <i class="fa-solid fa-bookmark"></i>
+
+                    Favorites
+
+                </a>
+
+                <a href="/profile" class="menu-item">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    Profile
+
+                </a>
+
+            </div>
+
+        </aside>
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <!-- HERO -->
+
+        <div class="hero">
+
+            <div class="hero-title">
+
+                Personalized Athlete Nutrition Plan
+
+            </div>
+
+            <div class="hero-description">
+
+                Nutrition planning generated dynamically
+                based on athlete preferences,
+                collaborative filtering recommendations,
+                calorie targets,
+                and training phase analysis.
+
+            </div>
+
+        </div>
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Daily Calories
+                </div>
+
+                <div class="stat-value">
+
+                    {{ plan.daily_calories }}
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Weight
+                </div>
+
+                <div class="stat-value">
+
+                    {{ user.weight }}kg
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Sport Type
+                </div>
+
+                <div class="stat-value">
+
+                    {{ user.sport_type }}
+
+                </div>
+
+            </div>
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Training Phase
+                </div>
+
+                <div class="stat-value">
+
+                    {{ user.training_phase }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- MEALS -->
+
+        <div class="meal-grid">
+
+            <!-- BREAKFAST -->
+
+            <div class="meal-card">
+
+                <div class="meal-header">
+
+                    <div class="meal-title">
+
+                        Breakfast
+
+                    </div>
+
+                    <div class="meal-target">
+
+                        {{ plan.breakfast_target }} kcal
+
+                    </div>
+
+                </div>
+
+                <div class="meal-content">
+
+                    {% for food in plan.breakfast %}
+
+                    <div class="food-item">
+
+                        <div class="food-name">
+
+                            {{ food.food_name }}
+
+                        </div>
+
+                        <div class="food-meta">
+
+                            <div class="food-badge">
+
+                                {{ food.calories }} kcal
+
+                            </div>
+
+                            <div class="food-badge">
+
+                                Protein:
+                                {{ food.protein }}g
+
+                            </div>
+
+                            <div class="food-badge">
+
+                                Carbs:
+                                {{ food.carbohydrates }}g
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            <!-- LUNCH -->
+
+            <div class="meal-card">
+
+                <div class="meal-header">
+
+                    <div class="meal-title">
+
+                        Lunch
+
+                    </div>
+
+                    <div class="meal-target">
+
+                        {{ plan.lunch_target }} kcal
+
+                    </div>
+
+                </div>
+
+                <div class="meal-content">
+
+                    {% for food in plan.lunch %}
+
+                    <div class="food-item">
+
+                        <div class="food-name">
+
+                            {{ food.food_name }}
+
+                        </div>
+
+                        <div class="food-meta">
+
+                            <div class="food-badge">
+
+                                {{ food.calories }} kcal
+
+                            </div>
+
+                            <div class="food-badge">
+
+                                Protein:
+                                {{ food.protein }}g
+
+                            </div>
+
+                            <div class="food-badge">
+
+                                Carbs:
+                                {{ food.carbohydrates }}g
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            <!-- DINNER -->
+
+            <div class="meal-card">
+
+                <div class="meal-header">
+
+                    <div class="meal-title">
+
+                        Dinner
+
+                    </div>
+
+                    <div class="meal-target">
+
+                        {{ plan.dinner_target }} kcal
+
+                    </div>
+
+                </div>
+
+                <div class="meal-content">
+
+                    {% for food in plan.dinner %}
+
+                    <div class="food-item">
+
+                        <div class="food-name">
+
+                            {{ food.food_name }}
+
+                        </div>
+
+                        <div class="food-meta">
+
+                            <div class="food-badge">
+
+                                {{ food.calories }} kcal
+
+                            </div>
+
+                            <div class="food-badge">
+
+                                Protein:
+                                {{ food.protein }}g
+
+                            </div>
+
+                            <div class="food-badge">
+
+                                Carbs:
+                                {{ food.carbohydrates }}g
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            <!-- SNACK -->
+
+            <div class="meal-card">
+
+                <div class="meal-header">
+
+                    <div class="meal-title">
+
+                        Snack
+
+                    </div>
+
+                    <div class="meal-target">
+
+                        {{ plan.snack_target }} kcal
+
+                    </div>
+
+                </div>
+
+                <div class="meal-content">
+
+                    {% for food in plan.snack %}
+
+                    <div class="food-item">
+
+                        <div class="food-name">
+
+                            {{ food.food_name }}
+
+                        </div>
+
+                        <div class="food-meta">
+
+                            <div class="food-badge">
+
+                                {{ food.calories }} kcal
+
+                            </div>
+
+                            <div class="food-badge">
+
+                                Protein:
+                                {{ food.protein }}g
+
+                            </div>
+
+                            <div class="food-badge">
+
+                                Carbs:
+                                {{ food.carbohydrates }}g
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

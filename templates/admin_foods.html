@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Smart Nutrition Admin
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Inter',sans-serif;
+        }
+
+        :root{
+
+            --bg:#09090b;
+            --card:#111113;
+            --border:#27272a;
+            --muted:#71717a;
+            --text:#fafafa;
+            --soft:#18181b;
+            --hover:#1f1f23;
+            --primary:#ffffff;
+
+        }
+
+        body{
+            background:var(--bg);
+            color:var(--text);
+            overflow-x:hidden;
+        }
+
+        .layout{
+            display:flex;
+            min-height:100vh;
+        }
+
+         /* ========================================
+           SIDEBAR
+        ======================================== */
+
+        .sidebar{
+            width:260px;
+            background:#090909;
+            border-right:1px solid rgba(255,255,255,.06);
+            padding:28px 18px;
+            position:fixed;
+            left:0;
+            top:0;
+            bottom:0;
+        }
+
+        .brand{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            margin-bottom:42px;
+        }
+
+        .brand-icon{
+            width:42px;
+            height:42px;
+            border-radius:14px;
+            background:#fff;
+            color:#000;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:700;
+            font-size:14px;
+        }
+
+        .brand-title{
+            font-size:16px;
+            font-weight:600;
+            line-height:1.4;
+        }
+
+        .menu-label{
+            color:#5f5f67;
+            font-size:11px;
+            margin-bottom:18px;
+            text-transform:uppercase;
+            letter-spacing:1px;
+        }
+
+        .menu{
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+        }
+
+        .menu-item{
+            text-decoration:none;
+            color:#c9c9cf;
+            padding:14px 16px;
+            border-radius:16px;
+            display:flex;
+            align-items:center;
+            gap:14px;
+            transition:.2s ease;
+            font-size:14px;
+            font-weight:500;
+        }
+
+        .menu-item:hover,
+        .menu-item.active{
+            background:#161616;
+            color:#fff;
+        }
+
+        .menu-item i{
+            width:18px;
+        }
+
+        .logout-wrapper{
+            position:absolute;
+            bottom:24px;
+            left:18px;
+            right:18px;
+        }
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        .main{
+
+            margin-left:270px;
+
+            width:calc(100% - 270px);
+
+            padding:24px;
+
+        }
+
+        /* =========================================
+           TOPBAR
+        ========================================= */
+
+        .topbar{
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+
+            margin-bottom:28px;
+
+            gap:20px;
+
+        }
+
+        .page-title{
+
+            font-size:28px;
+            font-weight:700;
+
+            margin-bottom:8px;
+
+            letter-spacing:-0.5px;
+
+        }
+
+        .page-subtitle{
+
+            color:var(--muted);
+
+            font-size:14px;
+
+            line-height:1.6;
+
+        }
+
+        .topbar-right{
+
+            display:flex;
+            align-items:center;
+            gap:12px;
+
+        }
+
+        .top-btn{
+
+            height:42px;
+
+            padding:0 18px;
+
+            border-radius:12px;
+
+            background:var(--soft);
+
+            border:1px solid var(--border);
+
+            color:white;
+
+            display:flex;
+            align-items:center;
+            gap:10px;
+
+            text-decoration:none;
+
+            font-size:14px;
+            font-weight:500;
+
+        }
+
+        /* =========================================
+           TOOLBAR
+        ========================================= */
+
+        .toolbar{
+
+            background:var(--card);
+
+            border:1px solid var(--border);
+
+            border-radius:20px;
+
+            padding:20px;
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+
+            gap:16px;
+
+            margin-bottom:24px;
+
+        }
+
+        .search-form{
+
+            flex:1;
+
+            display:flex;
+            gap:12px;
+
+        }
+
+        .search-input{
+
+            flex:1;
+
+            height:46px;
+
+            background:#09090b;
+
+            border:1px solid var(--border);
+
+            border-radius:14px;
+
+            padding:0 16px;
+
+            color:white;
+
+            outline:none;
+
+            font-size:14px;
+
+        }
+
+        .search-input:focus{
+
+            border-color:#3f3f46;
+
+        }
+
+        .primary-btn{
+
+            height:46px;
+
+            padding:0 20px;
+
+            border:none;
+
+            border-radius:14px;
+
+            background:white;
+            color:black;
+
+            font-size:14px;
+            font-weight:600;
+
+            cursor:pointer;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+
+            transition:.2s;
+
+        }
+
+        .primary-btn:hover{
+
+            opacity:.92;
+
+        }
+
+        .secondary-btn{
+
+            height:46px;
+
+            padding:0 18px;
+
+            border-radius:14px;
+
+            background:#18181b;
+
+            border:1px solid var(--border);
+
+            color:white;
+
+            font-size:14px;
+            font-weight:500;
+
+            cursor:pointer;
+
+            transition:.2s;
+
+        }
+
+        .secondary-btn:hover{
+
+            background:#232326;
+
+        }
+
+        /* =========================================
+           GRID
+        ========================================= */
+
+        .cards{
+
+            display:grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(280px,1fr)
+                );
+
+            gap:20px;
+
+        }
+
+        .card{
+
+            background:var(--card);
+
+            border:1px solid var(--border);
+
+            border-radius:24px;
+
+            overflow:hidden;
+
+            transition:.25s ease;
+
+        }
+
+        .card:hover{
+
+            transform:translateY(-3px);
+
+            border-color:#3f3f46;
+
+        }
+
+        .card-header{
+
+            height:140px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #121215,
+                    #0f0f11
+                );
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.04);
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            position:relative;
+
+        }
+
+        .food-icon{
+
+            width:64px;
+            height:64px;
+
+            border-radius:20px;
+
+            background:#18181b;
+
+            border:1px solid var(--border);
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            color:#8b8b93;
+
+            font-size:24px;
+
+        }
+
+        .card-body{
+
+            padding:22px;
+
+        }
+
+       .food-name{
+
+    font-size:20px;
+    font-weight:600;
+
+    line-height:1.4;
+
+    margin-bottom:18px;
+
+    color:#f4f4f5;
+
+    min-height:54px;
+
+    text-align:center;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+}
+
+        /* =========================================
+           NUTRITION
+        ========================================= */
+
+        .nutrition-grid{
+
+            display:grid;
+
+            grid-template-columns:1fr 1fr;
+
+            gap:12px;
+
+            margin-bottom:20px;
+
+        }
+
+        .nutrition-item{
+
+            background:#18181b;
+
+            border:1px solid rgba(255,255,255,.05);
+
+            border-radius:16px;
+
+            padding:14px;
+
+        }
+
+        .nutrition-label{
+
+            color:#8b8b93;
+
+            font-size:12px;
+
+            margin-bottom:8px;
+
+            font-weight:500;
+
+        }
+
+        .nutrition-value{
+
+            font-size:24px;
+            font-weight:600;
+
+            letter-spacing:-0.5px;
+
+            color:white;
+
+        }
+
+        .nutrition-unit{
+
+            font-size:14px;
+            color:#a1a1aa;
+
+            margin-left:2px;
+
+        }
+
+        /* =========================================
+           ACTIONS
+        ========================================= */
+
+        .actions{
+
+            display:flex;
+            gap:12px;
+
+        }
+
+        .action-btn{
+
+            flex:1;
+
+            height:46px;
+
+            border-radius:14px;
+
+            border:none;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+
+            cursor:pointer;
+
+            text-decoration:none;
+
+            font-size:14px;
+            font-weight:600;
+
+            transition:.2s ease;
+
+        }
+
+        .edit-btn{
+
+            background:white;
+            color:black;
+
+        }
+
+        .edit-btn:hover{
+
+            opacity:.92;
+
+        }
+
+        .delete-btn{
+
+            background:#18181b;
+
+            color:white;
+
+            border:1px solid var(--border);
+
+        }
+
+        .delete-btn:hover{
+
+            background:#232326;
+            color:#f87171;
+
+        }
+
+        /* =========================================
+           POPUP
+        ========================================= */
+
+        .popup-overlay{
+
+            position:fixed;
+
+            inset:0;
+
+            background:
+                rgba(0,0,0,.65);
+
+            display:none;
+
+            align-items:center;
+            justify-content:center;
+
+            z-index:99999;
+
+            padding:20px;
+
+        }
+
+        .popup{
+
+            width:100%;
+            max-width:420px;
+
+            background:#111113;
+
+            border:1px solid var(--border);
+
+            border-radius:24px;
+
+            padding:28px;
+
+            animation:popupShow .2s ease;
+
+        }
+
+        @keyframes popupShow{
+
+            from{
+                opacity:0;
+                transform:translateY(10px);
+            }
+
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+
+        }
+
+        .popup-icon{
+
+            width:64px;
+            height:64px;
+
+            border-radius:18px;
+
+            background:#18181b;
+
+            border:1px solid var(--border);
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            margin-bottom:20px;
+
+            font-size:22px;
+
+        }
+
+        .popup-title{
+
+            font-size:22px;
+            font-weight:700;
+
+            margin-bottom:10px;
+
+        }
+
+        .popup-description{
+
+            color:var(--muted);
+
+            font-size:14px;
+
+            line-height:1.7;
+
+            margin-bottom:24px;
+
+        }
+
+        .popup-actions{
+
+            display:flex;
+            gap:12px;
+
+        }
+
+        /* =========================================
+           MOBILE TOGGLE
+        ========================================= */
+
+        .mobile-toggle{
+
+            display:none;
+
+            position:fixed;
+
+            top:20px;
+            left:20px;
+
+            width:46px;
+            height:46px;
+
+            border-radius:12px;
+
+            border:1px solid var(--border);
+
+            background:#111113;
+
+            color:white;
+
+            z-index:9999;
+
+        }
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media(max-width:900px){
+
+            .mobile-toggle{
+                display:block;
+            }
+
+            .sidebar{
+                left:-100%;
+            }
+
+            .sidebar.active{
+                left:0;
+            }
+
+            .main{
+
+                margin-left:0;
+
+                width:100%;
+
+                padding:90px 18px 20px;
+
+            }
+
+            .toolbar{
+
+                flex-direction:column;
+                align-items:stretch;
+
+            }
+
+            .search-form{
+
+                flex-direction:column;
+
+            }
+
+            .topbar{
+
+                flex-direction:column;
+                align-items:flex-start;
+
+            }
+
+        }
+
+        @media(max-width:600px){
+
+            .cards{
+
+                grid-template-columns:1fr;
+
+            }
+
+            .page-title{
+
+                font-size:24px;
+
+            }
+
+            .food-name{
+
+                font-size:18px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<button
+    class="mobile-toggle"
+    onclick="toggleSidebar()"
+>
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    SN
+                </div>
+
+                <div class="brand-title">
+                    Smart Nutrition
+                </div>
+
+            </div>
+
+            <div class="menu-label">
+                Overview
+            </div>
+
+            <div class="menu">
+
+                <a
+                    href="/admin/dashboard"
+                    class="menu-item"
+                >
+
+                    <i class="fa-solid fa-table-columns"></i>
+
+                    Dashboard
+
+                </a>
+
+                <a
+                    href="/admin-food"
+                    class="menu-item active"
+                >
+
+                    <i class="fa-solid fa-bowl-food"></i>
+
+                    Foods Database
+
+                </a>
+
+                <a
+                    href="/athletes"
+                    class="menu-item"
+                >
+
+                    <i class="fa-solid fa-users"></i>
+
+                    Athletes
+
+                </a>
+
+                <a
+                    href="/recommendation-engine"
+                    class="menu-item"
+                >
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    Recommendation Engine
+
+                </a>
+
+                <a
+                    href="#"
+                    class="menu-item"
+                >
+
+                    <i class="fa-solid fa-heart-pulse"></i>
+
+                    Analytics
+
+                </a>
+
+            </div>
+
+            <div class="logout-wrapper">
+
+                <a
+                    href="/logout"
+                    class="menu-item"
+                >
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    Logout
+
+                </a>
+
+            </div>
+
+        </aside>
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1 class="page-title">
+                    Foods Database
+                </h1>
+
+                <p class="page-subtitle">
+                    Manage nutrition dataset, collaborative filtering food data,
+                    and athlete recommendation resources.
+                </p>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <button class="top-btn">
+
+                    <i class="fa-solid fa-database"></i>
+
+                    {{ total_foods }} Foods
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- TOOLBAR -->
+
+        <div class="toolbar">
+
+            <form
+                method="GET"
+                class="search-form"
+            >
+
+                <input
+                    type="text"
+                    name="search"
+                    class="search-input"
+                    placeholder="Search foods..."
+                    value="{{ search }}"
+                >
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    Search
+
+                </button>
+
+            </form>
+
+            <button
+                class="secondary-btn"
+                onclick="showCreatePopup()"
+            >
+
+                <i class="fa-solid fa-plus"></i>
+
+                Add Food
+
+            </button>
+
+        </div>
+
+        <!-- FOODS -->
+
+        <div class="cards">
+
+            {% for food in foods %}
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div class="food-icon">
+
+                        <i class="fa-solid fa-utensils"></i>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <h2 class="food-name">
+
+                        {{ food.food_name }}
+
+                    </h2>
+
+                    <div class="nutrition-grid">
+
+                        <div class="nutrition-item">
+
+                            <div class="nutrition-label">
+                                Calories
+                            </div>
+
+                            <div class="nutrition-value">
+
+                                {{ food.calories }}
+
+                            </div>
+
+                        </div>
+
+                        <div class="nutrition-item">
+
+                            <div class="nutrition-label">
+                                Protein
+                            </div>
+
+                            <div class="nutrition-value">
+
+                                {{ food.protein }}
+
+                                <span class="nutrition-unit">
+                                    g
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="nutrition-item">
+
+                            <div class="nutrition-label">
+                                Carbohydrates
+                            </div>
+
+                            <div class="nutrition-value">
+
+                                {{ food.carbohydrates }}
+
+                                <span class="nutrition-unit">
+                                    g
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="nutrition-item">
+
+                            <div class="nutrition-label">
+                                Sugar
+                            </div>
+
+                            <div class="nutrition-value">
+
+                                {{ food.sugar }}
+
+                                <span class="nutrition-unit">
+                                    g
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="actions">
+
+                        <a
+    href="{{ url_for('foods.edit_food', id=food.id) }}"
+    class="action-btn edit-btn"
+>
+
+    <i class="fa-solid fa-pen"></i>
+
+    Edit
+
+</a>
+
+                        <button
+                            class="action-btn delete-btn"
+                            onclick="showDeletePopup('{{ food.id }}')"
+                        >
+
+                            <i class="fa-solid fa-trash"></i>
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- DELETE POPUP -->
+
+<div
+    class="popup-overlay"
+    id="deletePopup"
+>
+
+    <div class="popup">
+
+        <div class="popup-icon">
+
+            <i class="fa-solid fa-trash"></i>
+
+        </div>
+
+        <div class="popup-title">
+            Delete Food
+        </div>
+
+        <div class="popup-description">
+
+            This action will permanently remove the food
+            data from the nutrition database system.
+
+        </div>
+
+        <div class="popup-actions">
+
+            <button
+                class="secondary-btn"
+                style="flex:1;"
+                onclick="closeDeletePopup()"
+            >
+                Cancel
+            </button>
+
+            <a
+                id="deleteLink"
+                style="flex:1;"
+            >
+
+                <button
+                    class="primary-btn"
+                    style="width:100%;"
+                >
+                    Delete
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- CREATE POPUP -->
+
+<div
+    class="popup-overlay"
+    id="createPopup"
+>
+
+    <div class="popup">
+
+        <div class="popup-icon">
+
+            <i class="fa-solid fa-plus"></i>
+
+        </div>
+
+        <div class="popup-title">
+            Add New Food
+        </div>
+
+        <div class="popup-description">
+
+            Create new nutrition data for collaborative
+            filtering recommendation engine.
+
+        </div>
+
+        <div class="popup-actions">
+
+            <button
+                class="secondary-btn"
+                style="flex:1;"
+                onclick="closeCreatePopup()"
+            >
+                Close
+            </button>
+
+            <button
+                class="primary-btn"
+                style="flex:1;"
+            >
+                Continue
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    function toggleSidebar(){
+
+        document
+            .getElementById('sidebar')
+            .classList
+            .toggle('active');
+
+    }
+
+    // =====================================
+    // DELETE POPUP
+    // =====================================
+
+    function showDeletePopup(id){
+
+        document
+            .getElementById('deletePopup')
+            .style.display = 'flex';
+
+        document
+            .getElementById('deleteLink')
+            .href = `/admin/foods/delete/${id}`;
+
+    }
+
+    function closeDeletePopup(){
+
+        document
+            .getElementById('deletePopup')
+            .style.display = 'none';
+
+    }
+
+    // =====================================
+    // CREATE POPUP
+    // =====================================
+
+    function showCreatePopup(){
+
+        document
+            .getElementById('createPopup')
+            .style.display = 'flex';
+
+    }
+
+    function closeCreatePopup(){
+
+        document
+            .getElementById('createPopup')
+            .style.display = 'none';
+
+    }
+
+    // =====================================
+    // EDIT POPUP
+    // =====================================
+
+    function showEditPopup(name){
+
+        alert(
+            `Edit food: ${name}`
+        );
+
+    }
+
+</script>
+
+</body>
+</html>

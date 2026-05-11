@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AI Recommendations</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Inter',sans-serif;
+        }
+
+        :root{
+
+            --bg:#09090b;
+            --card:#111113;
+            --soft:#18181b;
+            --border:#27272a;
+            --text:#fafafa;
+            --muted:#71717a;
+
+        }
+
+        body{
+
+            background:var(--bg);
+            color:var(--text);
+            overflow-x:hidden;
+
+        }
+
+        .layout{
+
+            display:flex;
+            min-height:100vh;
+
+        }
+
+        /* SIDEBAR */
+
+        .sidebar{
+
+            width:270px;
+            height:100vh;
+            background:#0c0c0f;
+            border-right:1px solid var(--border);
+            position:fixed;
+            left:0;
+            top:0;
+            padding:22px 16px;
+            z-index:999;
+            transition:0.3s ease;
+
+        }
+
+        .brand{
+
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:10px 12px;
+            margin-bottom:42px;
+
+        }
+
+        .brand-icon{
+
+            width:40px;
+            height:40px;
+            border-radius:14px;
+            background:white;
+            color:black;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:800;
+            font-size:14px;
+
+        }
+
+        .brand-title{
+
+            font-size:16px;
+            font-weight:700;
+
+        }
+
+        .menu-label{
+
+            color:var(--muted);
+            font-size:11px;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            padding-left:12px;
+            margin-bottom:14px;
+
+        }
+
+        .menu{
+
+            display:flex;
+            flex-direction:column;
+            gap:6px;
+
+        }
+
+        .menu-item{
+
+            display:flex;
+            align-items:center;
+            gap:14px;
+            text-decoration:none;
+            color:#d4d4d8;
+            padding:14px 14px;
+            border-radius:14px;
+            transition:0.2s ease;
+            font-size:14px;
+            font-weight:500;
+
+        }
+
+        .menu-item:hover{
+
+            background:var(--soft);
+            color:white;
+
+        }
+
+        .menu-item.active{
+
+            background:#18181b;
+            border:1px solid #27272a;
+            color:white;
+
+        }
+
+        .menu-item i{
+
+            width:18px;
+            font-size:15px;
+
+        }
+
+        /* MAIN */
+
+        .main{
+
+            margin-left:270px;
+            width:calc(100% - 270px);
+            padding:24px;
+
+        }
+
+        /* MOBILE */
+
+        .mobile-toggle{
+
+            display:none;
+            position:fixed;
+            top:18px;
+            left:18px;
+            width:46px;
+            height:46px;
+            border-radius:12px;
+            border:1px solid var(--border);
+            background:#111113;
+            color:white;
+            z-index:9999;
+
+        }
+
+        /* HERO */
+
+        .hero{
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(255,255,255,0.04),
+            transparent 32%
+        ),
+        #111113;
+
+    border:1px solid #1f1f1f;
+    border-radius:28px;
+    padding:30px;
+    margin-bottom:20px;
+
+}
+
+.badge{
+
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 16px;
+    border-radius:999px;
+    background:#101010;
+    border:1px solid #222225;
+    margin-bottom:22px;
+    font-size:12px;
+    font-weight:600;
+    color:#a1a1aa;
+
+}
+
+.hero h1{
+
+    font-size:42px;
+    line-height:1.12;
+
+    margin-bottom:14px;
+
+    max-width:680px;
+
+    font-weight:700;
+
+    letter-spacing:-1.6px;
+
+}
+
+.hero p{
+
+    color:#8b8b93;
+
+    font-size:14px;
+
+    line-height:1.8;
+
+    max-width:640px;
+
+    font-weight:400;
+
+}
+
+.summary-box{
+
+    margin-top:28px;
+    background:#0b0b0c;
+    border:1px solid #18181b;
+    border-radius:20px;
+    padding:22px 24px;
+    line-height:1.9;
+    color:#a1a1aa;
+    font-size:14px;
+
+}
+
+        .section-title{
+
+    font-size:22px;
+
+    margin-bottom:18px;
+
+    font-weight:600;
+
+    letter-spacing:-0.5px;
+
+}
+
+        /* GRID */
+
+        .recommendation-grid{
+
+            display:grid;
+            grid-template-columns:
+            repeat(
+                auto-fit,
+                minmax(320px,1fr)
+            );
+            gap:24px;
+            margin-bottom:100px;
+
+        }
+
+        .food-card{
+
+    background:
+        linear-gradient(
+            180deg,
+            #111111,
+            #090909
+        );
+
+    border:1px solid #1c1c1f;
+    border-radius:20px;
+    padding:20px;
+    transition:0.22s ease;
+
+}
+
+        .food-card:hover{
+
+            transform:translateY(-4px);
+            border-color:rgba(255,255,255,0.08);
+
+        }
+
+        .food-header{
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:16px;
+            margin-bottom:24px;
+
+        }
+
+       .food-name{
+
+    font-size:18px;
+
+    font-weight:600;
+
+    line-height:1.4;
+
+    letter-spacing:-0.3px;
+
+}
+
+.score{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    height:38px;
+    padding:0 14px;
+    border-radius:999px;
+    background:#151518;
+    border:1px solid #27272a;
+    font-weight:400;
+    font-size:10px;
+    color:#d4d4d8;
+    white-space:nowrap;
+
+}
+
+        .nutrition-grid{
+
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:14px;
+
+        }
+
+        .nutrition-box{
+
+            background:#0c0c0c;
+            border:1px solid #1f1f1f;
+            border-radius:10px;
+            padding:10px;
+
+        }
+
+        .nutrition-label{
+
+            color:#71717a;
+            font-size:13px;
+            margin-bottom:8px;
+
+        }
+
+        .nutrition-value{
+
+            font-size:15px;
+            font-weight:400;
+
+        }
+
+        .food-actions{
+
+            display:flex;
+            gap:12px;
+            margin-top:22px;
+
+        }
+
+        .food-btn{
+
+            flex:1;
+            height:40px;
+            border-radius:10px;
+            border:1px solid var(--border);
+            background:#18181b;
+            color:white;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+            font-size:12px;
+            font-weight:500;
+            cursor:pointer;
+            transition:0.2s ease;
+
+        }
+
+        .food-btn:hover{
+
+            background:#27272a;
+
+        }
+
+        .food-btn.primary{
+
+            background:white;
+            color:black;
+
+        }
+
+        /* MOBILE NAV */
+
+        .mobile-nav{
+
+            display:none;
+
+        }
+
+        @media(max-width:900px){
+
+            .mobile-toggle{
+                display:block;
+            }
+
+            .sidebar{
+                left:-100%;
+            }
+
+            .sidebar.active{
+                left:0;
+            }
+
+            .main{
+                margin-left:0;
+                width:100%;
+                padding:86px 18px 20px;
+            }
+
+        }
+
+        @media(max-width:768px){
+
+            .hero{
+                padding:30px;
+            }
+
+            .hero h1{
+                font-size:42px;
+            }
+
+            .section-title{
+                font-size:28px;
+            }
+
+        }
+
+        @media(max-width:700px){
+
+            .recommendation-grid{
+                grid-template-columns:1fr;
+            }
+
+            .mobile-nav{
+
+                position:fixed;
+                left:0;
+                bottom:0;
+                width:100%;
+                height:74px;
+                background:rgba(10,10,11,0.96);
+                border-top:1px solid var(--border);
+                display:grid;
+                grid-template-columns:repeat(5,1fr);
+                z-index:9999;
+                backdrop-filter:blur(20px);
+
+            }
+
+            .mobile-nav-item{
+
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                justify-content:center;
+                text-decoration:none;
+                color:#71717a;
+                font-size:11px;
+                gap:6px;
+
+            }
+
+            .mobile-nav-item.active{
+                color:white;
+            }
+
+            .mobile-nav-item i{
+                font-size:18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<button
+    class="mobile-toggle"
+    onclick="toggleSidebar()"
+>
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                SN
+            </div>
+
+            <div class="brand-title">
+                Smart Nutrition
+            </div>
+
+        </div>
+
+        <div class="menu-label">
+            Main Menu
+        </div>
+
+        <div class="menu">
+
+            <a
+                href="/dashboard"
+                class="menu-item"
+            >
+
+                <i class="fa-solid fa-table-columns"></i>
+
+                Dashboard
+
+            </a>
+
+            <a
+                href="/recommendations"
+                class="menu-item active"
+            >
+
+                <i class="fa-solid fa-utensils"></i>
+
+                Recommendations
+
+            </a>
+
+            <a href="/nutrition-plan" class="menu-item">
+
+                <i class="fa-solid fa-heart-pulse"></i>
+
+                Nutrition Plan
+
+            </a>
+
+            <a href="/favorites" class="menu-item">
+
+                <i class="fa-solid fa-bookmark"></i>
+
+                Favorites
+
+            </a>
+
+            <a href="/profile" class="menu-item">
+
+                <i class="fa-solid fa-user"></i>
+
+                Profile
+
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <div class="hero">
+
+            <div class="badge">
+
+                <i class="fa-solid fa-bolt"></i>
+
+                AI Nutrition Recommendation Engine
+
+            </div>
+
+            <h1>
+
+                Personalized Nutrition Recommendation Results
+
+            </h1>
+
+            <p>
+
+                Collaborative filtering recommendation engine
+                based on athlete similarity analysis,
+                food preference patterns,
+                nutrition profiling,
+                and AI prediction scoring.
+
+            </p>
+
+            <div class="summary-box">
+
+                {{ ai_summary }}
+
+            </div>
+
+        </div>
+
+        <div class="section-title">
+
+            Top AI Recommendations
+
+        </div>
+
+        <div class="recommendation-grid">
+
+            {% for food in recommendations %}
+
+            <div class="food-card">
+
+                <div class="food-header">
+
+                    <div class="food-name">
+
+                        {{ food.food_name }}
+
+                    </div>
+
+                    <div class="score">
+
+                        AI Score:
+                        {{ "%.2f"|format(food.predicted_score) }}
+
+                    </div>
+
+                </div>
+
+                <div class="nutrition-grid">
+
+                    <div class="nutrition-box">
+
+                        <div class="nutrition-label">
+
+                            Calories
+
+                        </div>
+
+                        <div class="nutrition-value">
+
+                            {{ food.calories }}
+
+                        </div>
+
+                    </div>
+
+                    <div class="nutrition-box">
+
+                        <div class="nutrition-label">
+
+                            Protein
+
+                        </div>
+
+                        <div class="nutrition-value">
+
+                            {{ food.protein }}g
+
+                        </div>
+
+                    </div>
+
+                    <div class="nutrition-box">
+
+                        <div class="nutrition-label">
+
+                            Carbs
+
+                        </div>
+
+                        <div class="nutrition-value">
+
+                            {{ food.carbohydrates }}g
+
+                        </div>
+
+                    </div>
+
+                    <div class="nutrition-box">
+
+                        <div class="nutrition-label">
+
+                            Sugar
+
+                        </div>
+
+                        <div class="nutrition-value">
+
+                            {{ food.sugar }}g
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="food-actions">
+
+                    <button class="food-btn">
+
+                        <i class="fa-solid fa-heart"></i>
+
+                        Save
+
+                    </button>
+
+                    <button class="food-btn primary">
+
+                        <i class="fa-solid fa-utensils"></i>
+
+                        AI Detail
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- MOBILE NAV -->
+
+<div class="mobile-nav">
+
+    <a
+        href="/dashboard"
+        class="mobile-nav-item"
+    >
+
+        <i class="fa-solid fa-house"></i>
+
+        Home
+
+    </a>
+
+    <a
+        href="/recommendations"
+        class="mobile-nav-item active"
+    >
+
+        <i class="fa-solid fa-utensils"></i>
+
+        AI Foods
+
+    </a>
+
+    <a href="#" class="mobile-nav-item">
+
+        <i class="fa-solid fa-heart"></i>
+
+        Saved
+
+    </a>
+
+    <a href="#" class="mobile-nav-item">
+
+        <i class="fa-solid fa-chart-line"></i>
+
+        Progress
+
+    </a>
+
+    <a href="#" class="mobile-nav-item">
+
+        <i class="fa-solid fa-user"></i>
+
+        Profile
+
+    </a>
+
+</div>
+
+<script>
+
+    function toggleSidebar(){
+
+        document
+            .getElementById('sidebar')
+            .classList.toggle('active');
+
+    }
+
+</script>
+
+</body>
+
+</html>
